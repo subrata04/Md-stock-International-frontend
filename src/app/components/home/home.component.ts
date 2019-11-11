@@ -5,6 +5,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -32,10 +33,10 @@ export class HomeComponent implements OnInit {
 
     this.getState();
     if (this.cookieservice.check('jwttoken') == false) {
-      console.log(this.cookieservice.check('jwttoken'));
+      //console.log(this.cookieservice.check('jwttoken'));
       this.setTempToken();
     }
-    let product: any = ['5d7f16463bd1bb6d1d19359b'];
+    let product: any = ['5dc973ac9b7cff286afc2731'];
     this.myform = this.fb.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
       website: [''],
       state: ['', Validators.required],
       created_by: this.activatedroute.snapshot.params.repid,
+      signup:[1],
       product: [product]
     })
   }
@@ -114,8 +116,8 @@ export class HomeComponent implements OnInit {
     };
     var result = this.http.get('assets/data/state.json').subscribe(res => {
       this.stateslist = res;
-      console.log('stateslist');
-      console.log(this.stateslist);
+      //console.log('stateslist');
+     // console.log(this.stateslist);
 
     });
     return result;
@@ -125,11 +127,12 @@ export class HomeComponent implements OnInit {
   doSubmit(template: TemplateRef<any>) {
 
     this.formSubmited = true;
-    console.log(this.myform.value);
+    
     for (let i in this.myform.controls) {
       this.myform.controls[i].markAsTouched();
     }
     if (this.myform.valid) {
+      console.log(this.myform.value);
       let link = this.api_url + 'addorupdatedata';
       let data: any = {
         "source": "leads",
@@ -167,7 +170,7 @@ export class HomeComponent implements OnInit {
   }
 
   inputUntouch(form: any, val: any) {
-    console.log('on blur .....');
+    //console.log('on blur .....');
     form.controls[val].markAsUntouched();
   }
 
@@ -226,7 +229,3 @@ export class HomeComponent implements OnInit {
 
 
 }
-
-
-
-
