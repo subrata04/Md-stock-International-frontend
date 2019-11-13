@@ -100,11 +100,12 @@ export class HomeComponent implements OnInit {
       })
     );
 
-    this.meta.setTitle('MD Stock International');
-    this.meta.setTag('og:description', ' ');
-    this.meta.setTag('og:title', 'MD Stock International');
-    this.meta.setTag('og:type', 'www.advancewellnesssolutions.com/');
-    this.meta.setTag('og:image', 'https://www.advancewellnesssolutions.com/assets/images/logo.png');
+    this.meta.setTitle('MD Stock International - Your Medical Partner');
+    this.meta.setTag('og:description', 'MD Stock International is the Medical Equipment & Supplies Partner you want for Top-Quality On-Demand Supplies, Direct-to-Manufacturer Purchases and much more.');
+    this.meta.setTag('og:title', 'MD Stock International - Your Medical Partner');
+    this.meta.setTag('og:type', 'website');
+    this.meta.setTag('og:url', 'https://mdstockint.com/');
+    this.meta.setTag('og:image', 'https://mdstockint.com/assets/images/MDStockFacebookBanner.jpg');
 
   }
 
