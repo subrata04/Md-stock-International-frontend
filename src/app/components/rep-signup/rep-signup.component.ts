@@ -11,6 +11,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 export class RepSignupComponent implements OnInit {
   public windowScrolled;
   public myform: FormGroup;
+  public modalRef: any;
+  public imgval: any;
   constructor(public fb: FormBuilder, public activatedroute: ActivatedRoute, private modalService: BsModalService ) { 
     this.myform = this.fb.group({
       firstname: ['', Validators.required],
