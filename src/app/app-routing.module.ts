@@ -16,7 +16,7 @@ const appRoutes: Routes = [
         }
     },
     {
-        path: 'test/:repid', component: HomeComponent,
+        path: ':repid', component: HomeComponent,
         data: {
             meta: {
                 title: 'Home',
