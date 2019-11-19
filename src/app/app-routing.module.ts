@@ -11,16 +11,16 @@ const appRoutes: Routes = [
         data: {
             meta: {
                 title: 'Home',
-                description: 'MD Stock Internationa'
+                description: 'MD Stock International'
             }
         }
     },
     {
-        path: ':repid', component: HomeComponent,
+        path: 'repid', component: HomeComponent,
         data: {
             meta: {
                 title: 'Home',
-                description: 'MD Stock Internationa'
+                description: 'MD Stock International'
             }
         }
     },
@@ -29,7 +29,7 @@ const appRoutes: Routes = [
         data: {
             meta: {
                 title: 'Home',
-                description: 'MD Stock Internationa'
+                description: 'MD Stock International'
             }
         }
     },
