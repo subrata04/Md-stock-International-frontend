@@ -1,10 +1,11 @@
 import { Component, OnInit, HostListener, TemplateRef } from '@angular/core';
 import { MetaService } from '@ngx-meta/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators,FormArray } from '@angular/forms';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import {ApiService} from '../../api-service';
 
 @Component({
   selector: 'app-home',
@@ -16,39 +17,45 @@ export class HomeComponent implements OnInit {
 
   modalRef: BsModalRef;
   windowScrolled: boolean;
-  public myform: FormGroup;
-  public formSubmited: boolean = false;
+  public signUpform: FormGroup;
   public successmodal: any = false;
   public stateslist: any;
+  public citylist:any;
   public ready: any;
   public imgval: any;
   public imagemodal: any = 1;
+  public ErrCode:boolean;
+  public collect_phone_array:any=[];
+  public collect_email_array:any=[];
+  public api_url:any = this.apiService.api_url;
+  // public api_url: any = 'https://r245816wug.execute-api.us-east-1.amazonaws.com/dev/api/';
 
-
-  // public api_url:any = environment['api_url'];
-  public api_url: any = 'https://api.influxhostserver.com/';
-
-  constructor(public router: Router, public activatedroute: ActivatedRoute, private readonly meta: MetaService, public fb: FormBuilder, public http: HttpClient, private modalService: BsModalService, public cookieservice: CookieService) {
+  constructor(public apiService:ApiService,public router: Router, public activatedroute: ActivatedRoute, private readonly meta: MetaService, public formBuilder: FormBuilder, public http: HttpClient, private modalService: BsModalService, public cookieservice: CookieService) {
 
 
     this.getState();
+    this.getCity();
     if (this.cookieservice.check('jwttoken') == false) {
-      //console.log(this.cookieservice.check('jwttoken'));
       this.setTempToken();
     }
-    let product: any = ['5dc973ac9b7cff286afc2731'];
-    this.myform = this.fb.group({
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+
+    this.signUpform = this.formBuilder.group({
+      hospitalname: ['', Validators.required],
+      contactperson: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.pattern(/^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/)])],
-      phoneno: ['', Validators.compose([Validators.required, Validators.pattern(/[0-9\+\-\ ]/)])],
-      mobile: [''],
+      password: ['',Validators.required],
+      contactphones:['',Validators.required],
+      confirmpassword:['',Validators.required],
       address: ['', Validators.required],
-      website: [''],
+      city: ['',Validators.required],
       state: ['', Validators.required],
+      speciality:['',Validators.required],
+      zip:['',Validators.required],
       created_by: this.activatedroute.snapshot.params.repid,
-      signup:[1],
-      product: [product]
+      type: ['hospital'],
+      status:0, 
+    },{
+        validator: this.machpassword('password', 'confirmpassword')
     })
   }
   setTempToken() {
@@ -61,7 +68,44 @@ export class HomeComponent implements OnInit {
 
 
   }
+  //collecting mass phones
+  collect_phones(event: any) {
+    if (event.keyCode == 13) {
+      this.collect_phone_array.push(event.target.value);
+      this.signUpform.controls['contactphones'].patchValue("");
+      return;
+    }
+  }
+   //delete mass phone
+   clearPhones(index) {
+    this.collect_phone_array.splice(index, 1);
+  }
 
+   //collecting mass emails
+  //  collect_email(event: any) {
+  //   if (event.keyCode == 13) {
+  //     this.collect_email_array.push(event.target.value);
+  //     this.signUpform.controls['contactemails'].patchValue("");
+  //     return;
+  //   }
+  // }
+
+  //  //delete mass email
+  //  clearEmail(index) {
+  //   this.collect_email_array.splice(index, 1);
+  // }
+  //  =====================Image Upload Configuration====================
+  // public configData: any = {
+  //   baseUrl: "http://3.15.236.141:5005/",
+  //   endpoint: "uploads",
+  //   size: "51200", // kb
+  //   format: ["jpg", "jpeg", "png"], // use all small font
+  //   type: "med_partner_img",
+  //   path: "files",
+  //   prefix: "medpartner_picture_"
+  // }
+
+  //  ==================================================================
 
   scrollToTop() {
     (function smoothscroll() {
@@ -108,7 +152,7 @@ export class HomeComponent implements OnInit {
     this.meta.setTag('og:image', 'https://mdstockint.com/assets/images/MDStockFacebookBanner.jpg');
 
   }
-
+/**fetch json state and city */
   getState() {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -123,26 +167,78 @@ export class HomeComponent implements OnInit {
     });
     return result;
   }
+  getCity(){
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    var result = this.http.get('assets/data/usa-cities.json').subscribe(res => {
+      this.citylist = res;
+    //   console.log('citylist');
+    //  console.log(this.citylist);
+
+    });
+    return result;
+  }
 
 
+/**Miss Match password check function */
+machpassword(passwordkye: string, confirmpasswordkye: string) {
+  return (group: FormGroup) => {
+    let passwordInput = group.controls[passwordkye],
+      confirmpasswordInput = group.controls[confirmpasswordkye];
+    if (passwordInput.value !== confirmpasswordInput.value) {
+      return confirmpasswordInput.setErrors({ notEquivalent: true });
+    }
+    else {
+      return confirmpasswordInput.setErrors(null);
+    }
+  };
+}
+
+/**submit function */
   doSubmit(template: TemplateRef<any>) {
 
-    this.formSubmited = true;
-    
-    for (let i in this.myform.controls) {
-      this.myform.controls[i].markAsTouched();
+    //     if (this.configData.files) {
+
+    //   if (this.configData.files.length > 1)
+    //    { 
+    //      console.log("Errcode");
+    //      this.ErrCode = true; return; 
+    //   }
+    //   this.signUpform.value.mpimage =
+    //     {
+    //       "basepath": this.configData.files[0].upload.data.basepath + '/' + this.configData.path + '/',
+    //       "image": this.configData.files[0].upload.data.data.fileservername,
+    //       "name": this.configData.files[0].name,
+    //       "type": this.configData.files[0].type
+    //     };
+    // } else {
+    //   this.signUpform.value.mpimage = false;
+    // }
+
+    // console.log(this.ErrCode);
+     console.log(this.signUpform.value);
+
+    for (let i in this.signUpform.controls) {
+      this.signUpform.controls[i].markAsTouched();
     }
-    if (this.myform.valid) {
-      console.log(this.myform.value);
-      let link = this.api_url + 'addorupdatedata';
+
+    /**Submit start here */
+    if (this.signUpform.valid) {
+      if(this.signUpform.value.confirmpassword != null){
+        delete this.signUpform.value.confirmpassword;
+      }
+  
       let data: any = {
-        "source": "leads",
-        "data": this.myform.value,
-        "sourceobj": ["created_by"]
+        "source": "users",
+        "data": this.signUpform.value,
+        "sourceobj": ["created_by"],
       };
+      console.log(this.cookieservice.get('jwttoken'));
       // this.successmodal = true;
-      this.http.post(link, data)
-        .subscribe(res => {
+      this.apiService.postData('addorupdatedata', data).subscribe(res => {
 
           let result: any = {};
           result = res;
@@ -150,7 +246,7 @@ export class HomeComponent implements OnInit {
           if (result.status == 'success') {
 
             this.modalRef = this.modalService.show(template, { class: 'modal-md submitpopup' });
-            this.myform.reset();
+            this.signUpform.reset();
 
             setTimeout(() => {
 

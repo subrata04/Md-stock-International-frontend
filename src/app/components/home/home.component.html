@@ -122,64 +122,141 @@
                         </div>
                     </form> -->
 
-          <form [formGroup]="myform" (ngSubmit)="doSubmit(template)">
+          <form [formGroup]="signUpform" (ngSubmit)="doSubmit(template)">
             <div class="form-group">
-              <input class="form-control" placeholder="First Name" type="text"
-                [formControl]="myform.controls['firstname']" (blur)="inputUntouch(myform, 'firstname')" />
+
+              <!-- Hospital name -->
+              <input class="form-control" placeholder="Hospital Name" type="text"
+                [formControl]="signUpform.controls['hospitalname']" (blur)="inputUntouch(signUpform, 'hospitalname')" />
               <span *ngIf="
-                  myform.controls['firstname'].touched &&
-                  !myform.controls['firstname'].valid
-                " class="errortext">First Name is required</span>
+                  signUpform.controls['hospitalname'].touched &&
+                  !signUpform.controls['hospitalname'].valid
+                " class="errortext">Hospital Name is required</span>
             </div>
 
+            <!--Contact Person -->
             <div class="form-group">
-              <input class="form-control" placeholder="Last Name" type="text"
-                [formControl]="myform.controls['lastname']" (blur)="inputUntouch(myform, 'lastname')" />
+              <input class="form-control" placeholder="Contact Person" type="text"
+                [formControl]="signUpform.controls['contactperson']"
+                (blur)="inputUntouch(signUpform, 'contactperson')" />
               <span *ngIf="
-                  myform.controls['lastname'].touched &&
-                  !myform.controls['lastname'].valid
-                " class="errortext">Last Name is required</span>
+                  signUpform.controls['contactperson'].touched &&
+                  !signUpform.controls['contactperson'].valid
+                " class="errortext">Contact Person is required</span>
             </div>
 
+            <!-- Primary Email-->
             <div class="form-group">
-              <input class="form-control" placeholder="Email" type="email" [formControl]="myform.controls['email']"
-                (blur)="inputUntouch(myform, 'email')" />
+              <input class="form-control" placeholder="Primary Email" type="email"
+                [formControl]="signUpform.controls['email']" (blur)="inputUntouch(signUpform, 'email')" />
               <span *ngIf="
-                  myform.controls['email'].touched &&
-                  !myform.controls['email'].valid
-                " class="errortext">Email Number is required</span>
+                  signUpform.controls['email'].touched &&
+                  !signUpform.controls['email'].valid
+                " class="errortext">Email Id is required</span>
             </div>
 
-            <div class="form-group">
-              <input class="form-control" placeholder="Phone Number" type="text"
-                [formControl]="myform.controls['phoneno']" (blur)="inputUntouch(myform, 'phoneno')" />
-              <span *ngIf="
-                  myform.controls['phoneno'].touched &&
-                  !myform.controls['phoneno'].valid
+            <!-- Email number multiple -->
+            <!-- <div class="form-group aditionalField">
+                <input formControlName="contactemails" placeholder="Contact other Emails" (keyup)="collect_email($event)">
+            <div *ngFor="let cma of collect_email_array;let i = index">
+                {{ cma }}
+                <i (click)="clearEmail(i)">remove</i>
+            </div>
+          </div> -->
+           
+            <!-- phone number multiple -->
+            <div class="form-group aditionalField">
+                <input [formControl]="signUpform.controls['contactphones']" placeholder="Contact Phone no's " (keyup)="collect_phones($event)">
+            <div *ngFor="let cpa of collect_phone_array;let i = index">
+                {{ cpa }}
+                <i (click)="clearPhones(i)">remove</i>
+            </div>
+            <span *ngIf="
+                  signUpform.controls['contactphones'].touched &&
+                  !signUpform.controls['contactphones'].valid
                 " class="errortext">Phone Number is required</span>
+          </div>
+            <!-- Password
+             -->
+            <div class="form-group">
+              <input class="form-control" placeholder="Password" type="password"
+                [formControl]="signUpform.controls['password']" (blur)="inputUntouch(signUpform, 'password')" />
+              <span *ngIf="
+                  signUpform.controls['password'].touched &&
+                  !signUpform.controls['password'].valid
+                " class="errortext">Password is required</span>
             </div>
 
             <div class="form-group">
-              <input class="form-control" placeholder="Address" type="text" [formControl]="myform.controls['address']"
-                (blur)="inputUntouch(myform, 'address')" />
+              <input class="form-control" placeholder="Confirm Password" type="password"
+                [formControl]="signUpform.controls['confirmpassword']"
+                (blur)="inputUntouch(signUpform, 'confirmpassword')" />
+              <span *ngIf="signUpform.controls['confirmpassword'].touched && !signUpform.controls['confirmpassword'].valid" class="errortext">Confirm Password is required</span>
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" placeholder="Address" type="text"
+                [formControl]="signUpform.controls['address']" (blur)="inputUntouch(signUpform, 'address')" />
               <span *ngIf="
-                  myform.controls['address'].touched &&
-                  !myform.controls['address'].valid
+                  signUpform.controls['address'].touched &&
+                  !signUpform.controls['address'].valid
                 " class="errortext">Address is required</span>
             </div>
 
-            <div class="form-group">
+             <div class="form-group">
               <select class="form-control" placeholder="Select State" type="text"
-                [formControl]="myform.controls['state']" (blur)="inputUntouch(myform, 'state')">
+                [formControl]="signUpform.controls['state']" (blur)="inputUntouch(signUpform, 'state')">
                 <option value="">Select State</option>
                 <option *ngFor="let item of stateslist" value="{{ item.abbreviation }}">{{ item.name }}</option>
               </select>
               <span *ngIf="
-                  myform.controls['state'].touched &&
-                  !myform.controls['state'].valid
+                  signUpform.controls['state'].touched &&
+                  !signUpform.controls['state'].valid
                 " class="errortext">State is required</span>
             </div>
 
+            <div class="form-group">
+              <select class="form-control" placeholder="Select City" type="text"
+                [formControl]="signUpform.controls['city']" (blur)="inputUntouch(signUpform, 'city')">
+                <option value="">Select City</option>
+                <option *ngFor="let item of citylist" value="{{ item.city }}">{{ item.city }}</option>
+              </select>
+              <span *ngIf="
+                  signUpform.controls['city'].touched &&
+                  !signUpform.controls['city'].valid
+                " class="errortext">City is required</span>
+            </div>
+
+            <div class="form-group">
+                <input class="form-control" placeholder="Zip" type="text" [formControl]="signUpform.controls['zip']"
+                  (blur)="inputUntouch(signUpform, 'zip')" />
+                <span *ngIf="
+                    signUpform.controls['zip'].touched &&
+                    !signUpform.controls['zip'].valid
+                  " class="errortext">Zip is required</span>
+              </div>
+
+              <div class="form-group">
+                  <input class="form-control" placeholder="Specialty" type="text"
+                    [formControl]="signUpform.controls['speciality']" (blur)="inputUntouch(signUpform, 'speciality')" />
+                  <span *ngIf="
+                      signUpform.controls['speciality'].touched &&
+                      !signUpform.controls['speciality'].valid
+                    " class="errortext">Specialty is required</span>
+                </div>
+
+            <!-- check box for status -->
+            <!-- <div class="form-group">
+                <input type="checkbox" [formControl]="signUpform.controls['status']">Active
+            </div> -->
+
+             <!-- Medical Parner's Image  -->
+             <!-- <div class="form-group">
+              <h1>Medical Parner's Image</h1>*Just add a single image
+             <lib-file-upload [config]="configData"></lib-file-upload>
+             <span *ngIf="ErrCode==true">Please add just one service image.</span>
+             </div> -->
+            
             <div class="form-group">
               <div class="btnsubmitwrapper">
                 <button type="submit" class="btnsubmit" data-toggle="modal">
@@ -195,7 +272,9 @@
   </div>
 </div>
 <div class="inner_para">
-  <p>The Mission of MD Stock International for our domestic and International partners is to become the key specialist resource partner to companies and territories for the provision of medical and laboratory equipment, supplies, pharmaceuticals, chemicals and consumables world wide.
+  <p>The Mission of MD Stock International for our domestic and International partners is to become the key specialist
+    resource partner to companies and territories for the provision of medical and laboratory equipment, supplies,
+    pharmaceuticals, chemicals and consumables world wide.
   </p>
 </div>
 <div class="container-fluid nmsfunneldoctor_block3">
@@ -362,7 +441,7 @@
           <!-- <p> Worldwide Producer of Laboratory, Biotechnology and Pharmaceuticals, Specialty Industrial and
             Microelectronic Chemicals </p> -->
           <p>{{item.details}}</p>
-          <button class="view_more"  (click)="showDetails(item, showtemplate)">View More</button>
+          <button class="view_more" (click)="showDetails(item, showtemplate)">View More</button>
         </div>
         <!-- <div class="items">
           <div class="icons">
@@ -805,7 +884,7 @@
           <span><a href="javascript:void(0);">Privacy Policy</a> |
             <a href="javascript:void(0);">Terms & Conditions</a></span>
         </p>
-        <p>© Copyright 2018  MD Stock International - All Rights Reserved</p>
+        <p>© Copyright 2018 MD Stock International - All Rights Reserved</p>
       </div>
     </div>
   </div>
@@ -833,12 +912,12 @@
 </ng-template>
 
 <ng-template #showtemplate>
-    <div class="modal-body text-center">
-      <button type="button" class="close" (click)="closep()">&times;</button>
+  <div class="modal-body text-center">
+    <button type="button" class="close" (click)="closep()">&times;</button>
 
-      <div class="inner_data" *ngIf="data != ''">
-        <h1>{{data.name}}</h1>
-      <p >{{data.details}}</p>
+    <div class="inner_data" *ngIf="data != ''">
+      <h1>{{data.name}}</h1>
+      <p>{{data.details}}</p>
     </div>
-    </div>
-  </ng-template>
+  </div>
+</ng-template>

@@ -1678,6 +1678,9 @@ video {
 .rep-signup .nmsfunneldoctor_block2_left h4 span { font-size: 32px;  }
 .rep-signup .btnleftinfo h2 { font-size: 20px; width: 57%; }
  
+.nmsfunneldoctor_formblock .aditionalField>div{ display: flex;
+    justify-content: center;
+    align-items: center;}
 @media (max-width: 1700px){
     .rep-signup .nmsfunneldoctor_block2_left h3 {
     font-size: 33px;
