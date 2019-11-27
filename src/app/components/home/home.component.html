@@ -122,7 +122,7 @@
                         </div>
                     </form> -->
 
-          <form [formGroup]="signUpform" (ngSubmit)="doSubmit(template)">
+          <form [formGroup]="signUpform" (ngSubmit)="doSubmit(template)" autocomplete="off">
             <div class="form-group">
 
               <!-- Hospital name -->
@@ -154,19 +154,10 @@
                   !signUpform.controls['email'].valid
                 " class="errortext">Email Id is required</span>
             </div>
-
-            <!-- Email number multiple -->
-            <!-- <div class="form-group aditionalField">
-                <input formControlName="contactemails" placeholder="Contact other Emails" (keyup)="collect_email($event)">
-            <div *ngFor="let cma of collect_email_array;let i = index">
-                {{ cma }}
-                <i (click)="clearEmail(i)">remove</i>
-            </div>
-          </div> -->
            
             <!-- phone number multiple -->
             <div class="form-group aditionalField">
-                <input [formControl]="signUpform.controls['contactphones']" placeholder="Contact Phone no's " (keyup)="collect_phones($event)">
+                <input class="form-control" [formControl]="signUpform.controls['contactphones']" placeholder="Contact Phone no's " (keyup)="collect_phones($event)" autocomplete="false">
             <div *ngFor="let cpa of collect_phone_array;let i = index">
                 {{ cpa }}
                 <i (click)="clearPhones(i)">remove</i>
@@ -180,7 +171,7 @@
              -->
             <div class="form-group">
               <input class="form-control" placeholder="Password" type="password"
-                [formControl]="signUpform.controls['password']" (blur)="inputUntouch(signUpform, 'password')" />
+                [formControl]="signUpform.controls['password']" (blur)="inputUntouch(signUpform, 'password')" autocomplete="false"/>
               <span *ngIf="
                   signUpform.controls['password'].touched &&
                   !signUpform.controls['password'].valid

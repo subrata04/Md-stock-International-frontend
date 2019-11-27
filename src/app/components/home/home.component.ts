@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
       state: ['', Validators.required],
       speciality:['',Validators.required],
       zip:['',Validators.required],
-      created_by: this.activatedroute.snapshot.params.repid,
+      salesrepselect: this.activatedroute.snapshot.params.repid,
       type: ['hospital'],
       status:0, 
     },{
@@ -219,7 +219,7 @@ machpassword(passwordkye: string, confirmpasswordkye: string) {
     // }
 
     // console.log(this.ErrCode);
-     console.log(this.signUpform.value);
+    // console.log(this.signUpform.value);
 
     for (let i in this.signUpform.controls) {
       this.signUpform.controls[i].markAsTouched();
@@ -234,9 +234,9 @@ machpassword(passwordkye: string, confirmpasswordkye: string) {
       let data: any = {
         "source": "users",
         "data": this.signUpform.value,
-        "sourceobj": ["created_by"],
+        "sourceobj": ["salesrepselect"],
       };
-      console.log(this.cookieservice.get('jwttoken'));
+      //console.log(this.cookieservice.get('jwttoken'));
       // this.successmodal = true;
       this.apiService.postData('addorupdatedata', data).subscribe(res => {
 
