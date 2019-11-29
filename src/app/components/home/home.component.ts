@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
     this.signUpform = this.formBuilder.group({
       hospitalname: ['', Validators.required],
       contactperson: ['', Validators.required],
-      email: ['', Validators.compose([Validators.required, Validators.pattern(/^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/)])],
+      email:['', [Validators.required, Validators.pattern(/^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/)]],
       password: ['',Validators.required],
       contactphones:['',Validators.required],
       confirmpassword:['',Validators.required],
@@ -199,7 +199,6 @@ machpassword(passwordkye: string, confirmpasswordkye: string) {
 
 /**submit function */
   doSubmit(template: TemplateRef<any>) {
-
     //     if (this.configData.files) {
 
     //   if (this.configData.files.length > 1)
@@ -230,7 +229,7 @@ machpassword(passwordkye: string, confirmpasswordkye: string) {
       if(this.signUpform.value.confirmpassword != null){
         delete this.signUpform.value.confirmpassword;
       }
-  
+      
       let data: any = {
         "source": "users",
         "data": this.signUpform.value,
